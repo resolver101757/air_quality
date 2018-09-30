@@ -5,7 +5,12 @@ from plantower import Plantower # plantower the sensor
 #from dragino import Dragino # the board 
 #from simplecayennelpp import CayenneLPP # a way to store the data (a standard)
 from influxdb import InfluxDBClient
-import datatime
+import datetime
+
+
+client = InfluxDBClient('localhost', 8086, 'root', 'root', 'example')
+
+client.create_database('home')
 
 #d = Dragino("/home/pi/dragino.ini")
 
@@ -40,6 +45,8 @@ while True:
             
             }
     ]
+    
+    client.write_points(data)
 
 # login for kn 
 #mydevices.com
