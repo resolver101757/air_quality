@@ -11,6 +11,7 @@ import datetime
 client = InfluxDBClient('localhost', 8086, 'root', 'root', 'example')
 
 client.create_database('home')
+client.switch_database('home')
 
 #d = Dragino("/home/pi/dragino.ini")
 
