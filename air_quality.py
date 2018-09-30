@@ -2,8 +2,8 @@
 # http://wiki.dragino.com/index.php?title=Lora_Shield
 
 from plantower import Plantower # plantower the sensor  
-from dragino import Dragino # the board 
-from simplecayennelpp import CayenneLPP # a way to store the data (a standard)
+#from dragino import Dragino # the board 
+#from simplecayennelpp import CayenneLPP # a way to store the data (a standard)
 from influxdb import InfluxDBClient
 
 #d = Dragino("/home/pi/dragino.ini")
