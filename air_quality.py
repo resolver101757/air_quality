@@ -1,55 +1,102 @@
-#useful website from #https://cayenne.mydevices.com/
-# http://wiki.dragino.com/index.php?title=Lora_Shield
-
-from plantower import Plantower # plantower the sensor  
-#from dragino import Dragino # the board 
-#from simplecayennelpp import CayenneLPP # a way to store the data (a standard)
-from influxdb import InfluxDBClient
+#!/usr/bin/env python
+import bme680 # air quality sensor 
+import time # current time 
+from influxdb import InfluxDBClient  # influx client 
 import datetime
 
+print("""Display Temperature, Pressure, Humidity and Gas
+Press Ctrl+C to exit
+""")
 
+# connect to influxdb, create home db if not already created
+# and select database to use 
 client = InfluxDBClient('localhost', 8086, 'root', 'root', 'example')
-
 client.create_database('home')
 client.switch_database('home')
 
-#d = Dragino("/home/pi/dragino.ini")
+# create a instance of the sensor
+try:
+    sensor = bme680.BME680(bme680.I2C_ADDR_PRIMARY)
+except IOError:
+    sensor = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
-sensor = Plantower ("/dev/ttyUSB0")
-sensor.read() # read the data 
-data=sensor.read() # store teh data 
-print(data) # lots of data 
-data.gr03um  # particules over 2.5 i think 
+# These calibration data can safely be commented
+# out, if desired.
 
-# store 10 samples in a list 
-datalist= []
+print('Calibration data:')
+for name in dir(sensor.calibration_data):
 
-while True:
+    if not name.startswith('_'):
+        value = getattr(sensor.calibration_data, name)
 
-    for i in range (100):
-        data = sensor.read()
-        datalist.append(data.gr03um)
+        if isinstance(value, int):
+            print('{}: {}'.format(name, value))
 
-    gr03um_average = sum(datalist) / len(datalist)  # average teh list 
-    #d.send_bytes([2])  # createsa 2 byte variables ithink 
-    #my_location = d.get_gps() # get teh gps location 
-    
-    data = [{"measurement": "AirParticles",
+# These oversampling settings can be tweaked to
+# change the balance between accuracy and noise in
+# the data.
+
+sensor.set_humidity_oversample(bme680.OS_2X)
+sensor.set_pressure_oversample(bme680.OS_4X)
+sensor.set_temperature_oversample(bme680.OS_8X)
+sensor.set_filter(bme680.FILTER_SIZE_3)
+sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
+
+print('\n\nInitial reading:')
+for name in dir(sensor.data):
+    value = getattr(sensor.data, name)
+
+    if not name.startswith('_'):
+        print('{}: {}'.format(name, value))
+
+sensor.set_gas_heater_temperature(320)
+sensor.set_gas_heater_duration(150)
+sensor.select_gas_heater_profile(0)
+
+# Up to 10 heater profiles can be configured, each
+# with their own temperature and duration.
+# sensor.set_gas_heater_profile(200, 150, nb_profile=1)
+# sensor.select_gas_heater_profile(1)
+
+print('\n\nPolling:')
+try:
+    while True:
+        if sensor.get_sensor_data():
+            output = '{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH'.format(
+                sensor.data.temperature,
+                sensor.data.pressure,
+                sensor.data.humidity)
+
+
+            if sensor.data.heat_stable:
+                print('{0},{1} Ohms'.format(
+                    output,
+                    sensor.data.gas_resistance))
+                gas = sensor.data.gas_resistance
+            else
+                gas = "no data"
+                
+            data = [{"measurement": "bme680_sensor",
                 "tags": {
                 "Location":"living_room",
                 "Floor": "1st_Floor"
-            },
+                },
                 "time": str(datetime.datetime.now()),
                 "fields": {
-                "03um" : gr03um_average
-            }
+                "temperture" : sensor.data.temperature,
+                "pressure" : sensor.data.pressure,
+                "humidity" : sensor.data.humidity,
+                "gas_resistance" : gas
+                }
             
             }
-    ]
+            ]
     
-    client.write_points(data)
+            client.write_points(data)
 
-# login for kn 
-#mydevices.com
-#u : emf@computernodes.net
-#p : backpackmemorytooth
+            
+
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    pass
