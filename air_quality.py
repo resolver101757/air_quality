@@ -73,7 +73,7 @@ try:
                     output,
                     sensor.data.gas_resistance))
                 gas = sensor.data.gas_resistance
-            else
+            else:
                 gas = "no data"
                 
             data = [{"measurement": "bme680_sensor",
