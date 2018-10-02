@@ -73,23 +73,40 @@ try:
                     output,
                     sensor.data.gas_resistance))
                 gas = sensor.data.gas_resistance
-            
+            else:
+                gas = "no data"
+            if gas = "no data"   
+                data = [{"measurement": "bme680_sensor",
+                    "tags": {
+                    "Location":"living_room",
+                    "Floor": "1st_Floor"
+                    },
+                    "time": str(datetime.datetime.now()),
+                    "fields": {
+                    "temperture" : sensor.data.temperature,
+                    "pressure" : sensor.data.pressure,
+                    "humidity" : sensor.data.humidity
+                    #"gas_resistance" : gas
+                    }
                 
-            data = [{"measurement": "bme680_sensor",
-                "tags": {
-                "Location":"living_room",
-                "Floor": "1st_Floor"
-                },
-                "time": str(datetime.datetime.now()),
-                "fields": {
-                "temperture" : sensor.data.temperature,
-                "pressure" : sensor.data.pressure,
-                "humidity" : sensor.data.humidity,
-                "gas_resistance" : gas
                 }
-            
-            }
-            ]
+                ]
+            else:
+                data = [{"measurement": "bme680_sensor",
+                    "tags": {
+                    "Location":"living_room",
+                    "Floor": "1st_Floor"
+                    },
+                    "time": str(datetime.datetime.now()),
+                    "fields": {
+                    "temperture" : sensor.data.temperature,
+                    "pressure" : sensor.data.pressure,
+                    "humidity" : sensor.data.humidity,
+                    "gas_resistance" : gas
+                    }
+                
+                }
+                ]
     
             client.write_points(data)
 
