@@ -75,7 +75,7 @@ try:
                 gas = sensor.data.gas_resistance
             else:
                 gas = "no data"
-            if gas = "no data":  
+            if gas == "no data":  
                 data = [{"measurement": "bme680_sensor",
                     "tags": {
                     "Location":"living_room",
