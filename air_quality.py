@@ -102,7 +102,7 @@ try:
                     "temperture" : sensor.data.temperature,
                     "pressure" : sensor.data.pressure,
                     "humidity" : sensor.data.humidity,
-                    "gas_resistance" : gas
+                    "gas_resistance" : int(gas)
                     }
                 
                 }
