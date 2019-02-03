@@ -1,0 +1,17 @@
+[Unit]
+Description=read pressure of read_pressure.py
+After=multi-user.target
+
+[Service]
+Type=idle
+User=pi
+WorkingDirectory=/home/pi/TBL165-279
+ExecStart=/usr/bin/python3 /home/pi/TBL165-279/read_pressure.py /home/pi/myscript.log 2>&1
+StandardOutput=syslog
+StandardError=syslog
+Restart=always
+
+
+[Install]
+WantedBy=multi-user.target
+

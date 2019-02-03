@@ -26,7 +26,7 @@ datalist= []
 
 while True:
 
-    for i in range (100):
+    for i in range (500):
         data = sensor.read()
         datalist.append(data.gr03um)
 
@@ -39,7 +39,7 @@ while True:
                 "Location":"living_room",
                 "Floor": "1st_Floor"
                 },
-                "time": str(datetime.datetime.now()),
+                "time": str(datetime.datetime.utcnow()),
                 "fields": {
                 "03um" : gr03um_average
                 }

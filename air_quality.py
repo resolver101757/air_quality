@@ -81,7 +81,7 @@ try:
                     "Location":"living_room",
                     "Floor": "1st_Floor"
                     },
-                    "time": str(datetime.datetime.now()),
+                    "time": str(datetime.datetime.utcnow()),
                     "fields": {
                     "temperture" : sensor.data.temperature,
                     "pressure" : sensor.data.pressure,
@@ -97,7 +97,7 @@ try:
                     "Location":"living_room",
                     "Floor": "1st_Floor"
                     },
-                    "time": str(datetime.datetime.now()),
+                    "time": str(datetime.datetime.utcnow()),
                     "fields": {
                     "temperture" : sensor.data.temperature,
                     "pressure" : sensor.data.pressure,
