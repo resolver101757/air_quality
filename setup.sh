@@ -4,8 +4,8 @@
 
 #Air particles  
 cp -v -f air_particles.service /lib/systemd/system/
-chmod +x  /home/pi/air_quality/air_particles.py
-sudo chmod 644 /lib/systemd/system/air_particles.service
+chmod +x  /home/pi/air_quality/particles.py
+sudo chmod 644 /lib/systemd/system/particles.service
 systemctl enable air_particles.service
 
 # Air quality (GAS)
