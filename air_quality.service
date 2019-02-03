@@ -1,5 +1,5 @@
 [Unit]
-Description=read pressure of read_pressure.py
+Description=air quality gas readings 
 After=multi-user.target
 
 [Service]

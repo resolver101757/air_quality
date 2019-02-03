@@ -1,12 +1,12 @@
 [Unit]
-Description=read pressure of read_pressure.py
+Description=air particles
 After=multi-user.target
 
 [Service]
 Type=idle
 User=pi
 WorkingDirectory=/home/pi/air_quality
-ExecStart=/usr/bin/python3 /home/pi/air_quality/air_quality.py /home/pi/myscript.log 2>&1
+ExecStart=/usr/bin/python3 /home/pi/air_quality/air_particles.py /home/pi/myscript.log 2>&1
 StandardOutput=syslog
 StandardError=syslog
 Restart=always
