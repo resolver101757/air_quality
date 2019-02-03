@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #useful website from #https://cayenne.mydevices.com/
 # http://wiki.dragino.com/index.php?title=Lora_Shield
 
