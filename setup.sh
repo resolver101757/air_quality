@@ -3,10 +3,10 @@
 # Found this instruction to setup systemd script and permisions here : https://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/ 
 
 #Air particles  
-cp -v -f air_particles.service /lib/systemd/system/
+cp -v -f particles.service /lib/systemd/system/
 chmod +x  /home/pi/air_quality/particles.py
 sudo chmod 644 /lib/systemd/system/particles.service
-systemctl enable air_particles.service
+systemctl enable particles.service
 
 # Air quality (GAS)
 cp -v -f air_quality.service /lib/systemd/system/
